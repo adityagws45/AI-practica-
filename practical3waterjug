@@ -1,0 +1,155 @@
+from queue import Queue
+
+def water_jug_bfs(capacity_jug1, capacity_jug2, target):
+    visited_states = set()
+    q = Queue()
+    q.put((0, 0))  # Starting state
+
+    while not q.empty():
+        current_state = q.get()
+
+        if current_state in visited_states:
+            continue
+
+        visited_states.add(current_state)
+
+        # ✅ Check if current state matches the target
+        if current_state == target:
+            return current_state
+
+        jug1, jug2 = current_state
+
+        # All possible operations
+        q.put((capacity_jug1, jug2))  # Fill jug1
+        q.put((jug1, capacity_jug2))  # Fill jug2
+        q.put((0, jug2))              # Empty jug1
+        q.put((jug1, 0))              # Empty jug2
+
+        # Pour jug1 -> jug2
+        pour_amount = min(jug1, capacity_jug2 - jug2)
+        q.put((jug1 - pour_amount, jug2 + pour_amount))
+
+        # Pour jug2 -> jug1
+        pour_amount = min(jug2, capacity_jug1 - jug1)
+        q.put((jug1 + pour_amount, jug2 - pour_amount))
+
+    return None
+
+# Example usage
+capacity_jug1 = 4
+capacity_jug2 = 3
+target = (2, 0)
+
+result = water_jug_bfs(capacity_jug1, capacity_jug2, target)
+print("Water Jug Solution:", result)
+
+
+
+
+
+
+
+
+# Importing the Queue class from the queue module to use BFS (Breadth-First Search)
+from queue import Queue
+
+# Function to solve the Water Jug Problem using BFS
+def water_jug_bfs(capacity_jug1, capacity_jug2, target):
+    # Set to store visited states and avoid repeating them
+    visited_states = set()
+
+    # Queue for BFS traversal, storing tuples (jug1, jug2) representing current state
+    q = Queue()
+    q.put((0, 0))  # Starting from empty jugs (0, 0)
+
+    # Loop continues until all states are explored or target is found
+    while not q.empty():
+        # Get the front state from the queue
+        current_state = q.get()
+
+        # Skip the state if it is already visited
+        if current_state in visited_states:
+            continue
+
+        # Mark the state as visited
+        visited_states.add(current_state)
+
+        # ✅ Check if the current state matches the target state
+        if current_state == target:
+            return current_state  # Solution found
+
+        # Extract the amount of water in both jugs
+        jug1, jug2 = current_state
+
+        # --- All possible operations from current state ---
+
+        # 1. Fill Jug 1 completely
+        q.put((capacity_jug1, jug2))
+
+        # 2. Fill Jug 2 completely
+        q.put((jug1, capacity_jug2))
+
+        # 3. Empty Jug 1
+        q.put((0, jug2))
+
+        # 4. Empty Jug 2
+        q.put((jug1, 0))
+
+        # 5. Pour water from Jug 1 to Jug 2
+        # Only pour the possible amount (not exceeding Jug 2 capacity)
+        pour_amount = min(jug1, capacity_jug2 - jug2)
+        q.put((jug1 - pour_amount, jug2 + pour_amount))
+
+        # 6. Pour water from Jug 2 to Jug 1
+        pour_amount = min(jug2, capacity_jug1 - jug1)
+        q.put((jug1 + pour_amount, jug2 - pour_amount))
+
+    # If no solution found after exploring all states
+    return None
+
+# ------------------ Example Usage ------------------
+
+# Capacity of Jug 1 = 4 liters
+# Capacity of Jug 2 = 3 liters
+# Target state = exactly 2 liters in Jug 1 and 0 in Jug 2
+capacity_jug1 = 4
+capacity_jug2 = 3
+target = (2, 0)
+
+# Call the function with input values
+result = water_jug_bfs(capacity_jug1, capacity_jug2, target)
+
+# Print the result
+print("Water Jug Solution:", result)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+✅ Manual Step-by-Step Solution (for Theory or Viva)
+We want to reach (2, 0) using allowed operations: Fill, Empty, Pour.
+
+Let's denote states as (Jug1, Jug2):
+
+Step	Action	Resulting State
+1	Fill Jug1	(4, 0)
+2	Pour Jug1 → Jug2	(1, 3)
+3	Empty Jug2	(1, 0)
+4	Pour Jug1 → Jug2	(0, 1)
+5	Fill Jug1	(4, 1)
+6	Pour Jug1 → Jug2 (2L to fill)	(2, 3)
+7	Empty Jug2	(2, 0) ✅
+
+🎯 Goal Reached in 7 Steps: (2, 0)
+
