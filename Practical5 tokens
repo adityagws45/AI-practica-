@@ -1,0 +1,159 @@
+#Write a program for the Information Retrieval System using appropriate NLP tools (such as
+#NLTK, Open NLP, …)
+#a. Text tokenization
+#b. Count word frequency
+#c. Remove stop words
+#d. POS tagging
+
+
+
+
+import nltk
+from nltk import word_tokenize, FreqDist, pos_tag
+from nltk.corpus import stopwords
+# Download required NLTK data only once
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger_eng')
+nltk.download('averaged_perceptron_tagger')
+
+def text_tokenization(text):
+    return word_tokenize(text)
+
+def count_word_frequency(tokens):
+    return FreqDist(tokens)
+
+def remove_stop_words(tokens):
+    stop_words = set(stopwords.words('english'))
+    return [word for word in tokens if word.lower() not in stop_words]
+
+def pos_tagging(tokens):
+    return pos_tag(tokens)
+
+text = input("Enter a sentence or a paragraph: ")
+operation = input("Select operation (a. Tokenization, b. Word Frequency, c. Remove Stop Words, d. POS Tagging): ").strip().lower()
+
+tokens = text_tokenization(text)
+
+if operation == 'a':
+    print("Tokens:", tokens)
+elif operation == 'b':
+    word_frequency = count_word_frequency(tokens)
+    print("Word Frequency:")
+    for word, freq in word_frequency.items():
+        print(f"{word}: {freq}")
+elif operation == 'c':
+    tokens_without_stopwords = remove_stop_words(tokens)
+    print("Tokens without Stop Words:", tokens_without_stopwords)
+elif operation == 'd':
+    pos_tags = pos_tagging(tokens)
+    print("POS Tags:", pos_tags)
+else:
+    print("Invalid operation. Please select a, b, c, or d.")
+
+
+
+
+
+
+
+# Microsoft Windows [Version 10.0.22631.5189]
+# (c) Microsoft Corporation. All rights reserved.
+
+# C:\Users\DELL\Downloads>python new55.py
+
+# Enter a sentence or a paragraph: python is a programming language.
+# Select operation (a. Tokenization, b. Word Frequency, c. Remove Stop Words, d. POS Tagging): a
+# Tokens: ['python', 'is', 'a', 'programming', 'language', '.']
+
+
+# Enter a sentence or a paragraph: Python is fun.Python is of powerful.
+# Select operation (a. Tokenization, b. Word Frequency, c. Remove Stop Words, d. POS Tagging): b
+# Word Frequency:
+# Python: 1
+# is: 2
+# fun.Python: 1
+# of: 1
+# powerful: 1
+# .: 1
+
+
+# Enter a sentence or a paragraph: Python is a programming language.
+# Select operation (a. Tokenization, b. Word Frequency, c. Remove Stop Words, d. POS Tagging): c
+# Tokens without Stop Words: ['Python', 'programming', 'language', '.']
+
+
+# Enter a sentence or a paragraph: Python is  powerful language.
+# Select operation (a. Tokenization, b. Word Frequency, c. Remove Stop Words, d. POS Tagging): d
+# POS Tags: [('Python', 'NNP'), ('is', 'VBZ'), ('powerful', 'JJ'), ('language', 'NN'), ('.', '.')]
+
+
+
+
+
+# Import necessary modules from the Natural Language Toolkit (NLTK)
+import nltk
+from nltk import word_tokenize, FreqDist, pos_tag
+from nltk.corpus import stopwords
+
+# Download required NLTK resources (only needs to be done once)
+# 'punkt_tab' is incorrect; the correct name is 'punkt'
+# 'averaged_perceptron_tagger_eng' is also incorrect, we use 'averaged_perceptron_tagger'
+nltk.download('punkt')  # For tokenizing text into words
+nltk.download('stopwords')  # For list of stopwords in English
+nltk.download('averaged_perceptron_tagger')  # For Part-of-Speech tagging
+
+# Function to perform text tokenization
+def text_tokenization(text):
+    return word_tokenize(text)  # Tokenizes text into individual words/punctuation
+
+# Function to count frequency of each word in the token list
+def count_word_frequency(tokens):
+    return FreqDist(tokens)  # Returns a dictionary-like object with word frequencies
+
+# Function to remove stop words from token list
+def remove_stop_words(tokens):
+    stop_words = set(stopwords.words('english'))  # Load English stop words into a set
+    return [word for word in tokens if word.lower() not in stop_words]  # Keep words not in stop words
+
+# Function to perform Part-of-Speech tagging
+def pos_tagging(tokens):
+    return pos_tag(tokens)  # Assigns POS tags to each token
+
+# Prompt user to enter a sentence or paragraph
+text = input("Enter a sentence or a paragraph: ")
+
+# Ask user which operation to perform
+operation = input("Select operation (a. Tokenization, b. Word Frequency, c. Remove Stop Words, d. POS Tagging): ").strip().lower()
+
+# First, tokenize the input text (as tokenization is required for all options)
+tokens = text_tokenization(text)
+
+# Perform the selected operation
+if operation == 'a':
+    # Option a: Tokenization
+    print("Tokens:", tokens)
+
+elif operation == 'b':
+    # Option b: Word Frequency Count
+    word_frequency = count_word_frequency(tokens)
+    print("Word Frequency:")
+    for word, freq in word_frequency.items():
+        print(f"{word}: {freq}")  # Print each word with its frequency
+
+elif operation == 'c':
+    # Option c: Remove Stop Words
+    tokens_without_stopwords = remove_stop_words(tokens)
+    print("Tokens without Stop Words:", tokens_without_stopwords)
+
+elif operation == 'd':
+    # Option d: POS Tagging
+    pos_tags = pos_tagging(tokens)
+    print("POS Tags:", pos_tags)  # Each token is paired with its part-of-speech tag
+
+else:
+    # Handle invalid input
+    print("Invalid operation. Please select a, b, c, or d.")
+
+
+
