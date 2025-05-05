@@ -1,0 +1,163 @@
+#implement nqueen problem using hill climbing 
+
+
+import random
+
+def calculate_heuristic(board):
+    n = len(board)
+    conflicts = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            if board[i] == board[j] or abs(board[i] - board[j]) == abs(i - j):
+                conflicts += 1
+    return conflicts
+
+def hill_climbing(n, max_restarts=1000):
+    for _ in range(max_restarts):
+        current_board = [random.randint(0, n-1) for _ in range(n)]
+        current_heuristic = calculate_heuristic(current_board)
+
+        while True:
+            neighbor = None
+            min_heuristic = current_heuristic
+
+            for col in range(n):
+                for row in range(n):
+                    if current_board[col] != row:
+                        new_board = list(current_board)
+                        new_board[col] = row
+                        new_heuristic = calculate_heuristic(new_board)
+                        if new_heuristic < min_heuristic:
+                            neighbor = new_board
+                            min_heuristic = new_heuristic
+
+            if neighbor is None:
+                break  # Local minimum
+            current_board = neighbor
+            current_heuristic = min_heuristic
+
+            if current_heuristic == 0:
+                return current_board
+
+    return None  # Failed after max_restarts
+
+# Example usage
+n = 4
+solution = hill_climbing(n)
+if solution:
+    print("N-Queens Solution:", solution)
+else:
+    print("No solution found.")
+
+
+
+
+
+
+
+#Microsoft Windows [Version 10.0.22631.5189]
+#(c) Microsoft Corporation. All rights reserved.
+
+#C:\Users\DELL\Downloads>python new23.py
+#N-Queens Solution: [3, 8, 4, 2, 0, 9, 6, 1, 5, 7]
+
+
+
+
+
+
+
+
+
+
+
+import random  # Importing random module for generating random board configurations
+
+# Function to calculate the number of pairs of queens that are attacking each other
+def calculate_heuristic(board):
+    n = len(board)  # Get the size of the board (number of queens)
+    conflicts = 0  # Initialize conflict counter
+
+    # Compare each pair of queens to check for conflicts
+    for i in range(n):
+        for j in range(i + 1, n):
+            # Check if two queens are in the same row or on the same diagonal
+            if board[i] == board[j] or abs(board[i] - board[j]) == abs(i - j):
+                conflicts += 1  # Increment conflicts if they attack each other
+    return conflicts  # Return the total number of conflicts
+
+# Function to solve N-Queens using Hill Climbing algorithm
+def hill_climbing(n, max_restarts=1000):
+    # Try up to 'max_restarts' times in case of getting stuck in a local minimum
+    for _ in range(max_restarts):
+        # Generate a random initial board: one queen in each column at a random row
+        current_board = [random.randint(0, n - 1) for _ in range(n)]
+        current_heuristic = calculate_heuristic(current_board)  # Compute heuristic for the current board
+
+        # Start hill climbing
+        while True:
+            neighbor = None  # Store the best neighbor found so far
+            min_heuristic = current_heuristic  # Start with current heuristic as the minimum
+
+            # Explore all possible moves for each column
+            for col in range(n):
+                for row in range(n):
+                    if current_board[col] != row:
+                        # Create a new board by moving queen in column 'col' to row 'row'
+                        new_board = list(current_board)
+                        new_board[col] = row
+                        new_heuristic = calculate_heuristic(new_board)
+
+                        # If this move reduces the number of conflicts, consider it as a neighbor
+                        if new_heuristic < min_heuristic:
+                            neighbor = new_board  # Update best neighbor
+                            min_heuristic = new_heuristic  # Update best heuristic
+
+            # If no better neighbor found, then we are at a local minimum
+            if neighbor is None:
+                break
+
+            # Move to the better neighbor
+            current_board = neighbor
+            current_heuristic = min_heuristic
+
+            # If perfect solution found (0 conflicts), return it
+            if current_heuristic == 0:
+                return current_board
+
+    # If no solution found after max_restarts, return None
+    return None
+
+# ---------------------- Main Program Execution ----------------------
+
+n = 4  # Number of queens (and board size)
+
+# Call the hill climbing function to solve N-Queens
+solution = hill_climbing(n)
+
+# Print the solution if found
+if solution:
+    print("N-Queens Solution:", solution)
+else:
+    print("No solution found.")
+
+
+
+
+
+
+ Explanation Summary:
+Each queen is placed in a different column, and we try to move them within their columns to minimize conflicts.
+
+The algorithm looks for a neighbor state with fewer attacking pairs (lower heuristic).
+
+If no better neighbor is found, it restarts with a new random board.
+
+The process is repeated for a number of restarts (max_restarts) until a valid solution (zero conflicts) is found.
+
+Would you like the 
+
+
+
+
+
