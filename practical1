@@ -1,0 +1,129 @@
+Traveling salesman problem code
+
+###################################################
+import numpy as np
+
+def calculate_distance(city1, city2):
+    return np.linalg.norm(np.array(city1) - np.array(city2))
+
+def nearest_neighbor_algorithm(city_coordinates):
+    num_cities = len(city_coordinates)
+    unvisited = set(range(num_cities))
+    tour = []
+    current_city = np.random.choice(list(unvisited))
+    tour.append(current_city)
+    unvisited.remove(current_city)
+    while unvisited:
+        nearest_city = min(unvisited, key=lambda city: calculate_distance(city_coordinates[current_city], city_coordinates[city]))
+        tour.append(nearest_city)
+        unvisited.remove(nearest_city)
+        current_city = nearest_city
+    return tour
+
+def calculate_total_distance(tour, city_coordinates):
+    total_distance = 0
+    for i in range(len(tour)):
+        total_distance += calculate_distance(city_coordinates[tour[i]], city_coordinates[tour[(i + 1) % len(tour)]])
+    return total_distance
+
+city_coordinates = [(2, 3), (6, 7), (1, 8), (4, 5), (9, 1), (7, 4)]
+tour = nearest_neighbor_algorithm(city_coordinates)
+total_distance = calculate_total_distance(tour, city_coordinates)
+
+print("Optimal tour:", tour)
+print("Total distance:", total_distance)
+
+
+
+
+C:\Users\DELL\Downloads>python new1.py
+Optimal tour: [0, 3, 1, 5, 4, 2]
+Total distance: 28.153848511452182
+
+
+
+C:\Users\DELL\Downloads>python new1.py
+Optimal tour: [np.int64(3), 0, 2, 1, 5, 4]
+Total distance: 26.197419324996975
+
+
+
+####################################################
+
+Detailed explanantion of each line commented out
+
+
+# Importing the numpy library which helps in mathematical operations
+import numpy as np
+
+# Function to calculate the Euclidean distance between two cities (p1 and p2)
+def get_dist(p1, p2):
+    # Convert both city coordinates to numpy arrays and find the distance using Euclidean formula
+    # Formula: sqrt((x2 - x1)^2 + (y2 - y1)^2)
+    return np.linalg.norm(np.array(p1) - np.array(p2))
+
+# Function to find the optimal tour/path using the Nearest Neighbor Algorithm
+def find_path(city_list):
+    n = len(city_list)              # Get the total number of cities
+    left = set(range(n))           # Create a set of city indices (0 to n-1) representing unvisited cities
+    path = []                      # Initialize an empty list to store the visiting order of cities (the path)
+
+    # Randomly choose a starting city from the unvisited cities
+    curr = int(np.random.choice(list(left)))  # np.random.choice returns np.int64, so we convert it to regular int
+    path.append(curr)             # Add the starting city to the path
+    left.remove(curr)             # Mark this city as visited by removing it from the set
+
+    # Repeat until all cities are visited
+    while left:
+        # Find the nearest city (minimum distance) among unvisited ones from the current city
+        near = min(left, key=lambda c: get_dist(city_list[curr], city_list[c]))
+        path.append(near)         # Add the nearest city to the path
+        left.remove(near)         # Remove the nearest city from unvisited set
+        curr = near               # Set the nearest city as the current city and continue
+
+    return path                   # Return the complete path/tour visiting all cities
+
+# Function to calculate the total distance of the complete tour
+def path_length(path, city_list):
+    total = 0                     # Initialize the total distance to 0
+    for i in range(len(path)):
+        # Add the distance between current city and the next city in the path
+        # Use modulo (%) to return to the starting city in the end (complete the tour)
+        total += get_dist(city_list[path[i]], city_list[path[(i + 1) % len(path)]])
+    return total                  # Return the total calculated distance
+
+# List of cities with their coordinates (each tuple is (x, y))
+city_list = [(2, 3), (6, 7), (1, 8), (4, 5), (9, 1), (7, 4)]
+
+# Call the find_path() function to get the order in which cities should be visited
+path = find_path(city_list)
+
+# Calculate the total distance of the path returned by find_path()
+length = path_length(path, city_list)
+
+# Print the final path (order of cities) and total distance of the path
+print("Optimal path:", path)
+print("Total distance:", length)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Detailed explanantion of each line
