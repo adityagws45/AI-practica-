@@ -1,4 +1,4 @@
-Traveling salesman problem code
+Identify and implement heuristic and search strategy for Traveling salesman problem code
 
 ###################################################
 import numpy as np
